@@ -79,5 +79,5 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("modbus_rtu", MODBUS_Node, {});
+    RED.nodes.registerType("Modbus RTU", MODBUS_Node, {});
 }

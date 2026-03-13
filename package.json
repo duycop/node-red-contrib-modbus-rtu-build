@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-modbus-rtu-build",
-  "version": "1.0.18",
+  "version": "1.0.21",
   "description": "Node-RED function build content modbus_rtu - Code by DoDuyCop",
   "author": "duycop",
   "license": "MIT",
