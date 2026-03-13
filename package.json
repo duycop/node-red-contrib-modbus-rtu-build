@@ -4,19 +4,26 @@
   "description": "Node-RED function build content modbus_rtu - Code by DoDuyCop",
   "author": "duycop",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/duycop/node-red-contrib-modbus-rtu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/duycop/node-red-contrib-modbus-rtu/issues"
+  },
   "keywords": [
     "node-red",
     "modbus",
     "crc16",
     "modbus_rtu"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "node-red": {
-  	"version": ">=4.1.0",
+    "version": ">=4.1.0",
     "nodes": {
       "modbus_rtu": "modbus_rtu.js"
-    },
-     "engines": {
-	   "node": ">=18.0.0"
-	 }
+    }
   }
 }
