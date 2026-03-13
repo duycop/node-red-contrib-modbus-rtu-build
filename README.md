@@ -1,4 +1,4 @@
-# node-red-contrib-ydns
+# node-red-contrib-modbus-rtu-build
 
 Node-RED function build content modbus-rtu
 
@@ -27,8 +27,7 @@ nothing
 ## Changelog
 
 - 1.0.0: initial release
-- 1.0.1 .. 1.0.3: fix bug
-- 1.0.4 .. 1.0.8: add log
+- 1.0.1 .. 1.0.11: fix bug
 
 ## TODO
 
