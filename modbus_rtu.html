@@ -1,0 +1,134 @@
+<script type="text/javascript">
+    RED.nodes.registerType('modbus_rtu', {
+        category: 'function',
+        color: '#fff000',
+        defaults: {
+            slave_id: {
+                value: ""
+            },
+            fn: {
+                value: "0"
+            },
+            addr: {
+                value: ""
+            },
+            count: {
+                value: ""
+            },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'bridge.png',
+        label: function() {
+		    if (this.fn == "-1") {
+		        return "ModbusRTU fn=DYNAMIC";
+		    } else if (this.fn == "0") {
+		        return "CRC ONLY";
+		    } else {
+		        return `ModbusRTU fn=${this.fn}`;
+		    }
+		},
+        oneditprepare: function() {
+            // Hàm kiểm tra và ẩn hiện
+            function updateVisibility() {
+                var fnValue = $("#node-input-fn").val();
+                if (fnValue === "0") {
+                    $(".modbus-fields").hide();
+                    $(".modbus-crc").show();
+                    
+                } else {
+                    $(".modbus-fields").show();
+                    $(".modbus-crc").hide();
+                }
+            }
+
+            // Gọi ngay khi mở cửa sổ cấu hình
+            updateVisibility();
+
+            // Lắng nghe sự kiện thay đổi của select
+            $("#node-input-fn").on("change", function() {
+                updateVisibility();
+            });
+        }
+    });
+</script>
+<script type="text/html" data-template-name="modbus_rtu">
+	<div class="form-row">
+	<h3>modbus_rtu Build payload msg</h3><hr>
+	<div/>
+	<div class="form-row">
+	    <label for="node-input-fn"><i class="fa fa-tag"></i> Function</label>
+	    <select id="node-input-fn" style="width:70%">
+	    	<option value=0>CRC ONLY</option>
+	    	<option value=-1>DYNAMIC by msg.payload.fn</option>
+			<option value=1>01 Read Coils (0x)</option>
+			<option value=2>02 Read Discrete Inputs [1x]</option>
+			<option value=3 selected>03 Read Holding Registers (4x)</option>
+			<option value=4>04 Read Input Registers (3x)</option>
+			<option value=5>05 Write Single Coil</option>
+			<option value=6>06 Write Single Register</option>
+			<option value=15>15 Write Multiple Coils</option>
+			<option value=16>16 Write Multiple Registers</option>
+	    </select>
+	</div>
+	<div class="modbus-fields">
+		<div class="form-row">
+		    <label for="node-input-slave_id"><i class="fa fa-tag"></i> Slave id</label>
+		    <input type="text" id="node-input-slave_id" value="1" placeholder="id">
+		</div>
+
+		<div class="form-row">
+		    <label for="node-input-addr"><i class="fa fa-tag"></i> Address</label>
+		    <input type="text" value="0" id="node-input-addr" placeholder="Address begin">
+		</div>
+		
+		<div class="form-row">
+		    <label for="node-input-count"><i class="fa fa-tag"></i> Count</label>
+		    <input type="text" value="1" id="node-input-count" placeholder="Quantity">
+		</div>
+	</div>
+	<hr>
+	<i class="fa fa-bomb"></i> Algorithm
+	<pre class="modbus-fields">	const data = ModbusMsg(id, fn, addr, count);
+	msg.payload = add_crc16(data);</pre>
+	<pre class="modbus-crc">	const data = msg.payload;
+	msg.payload = add_crc16(data);</pre>
+	<hr>
+	Code by Do Duy Cop
+</script>
+
+<script type="text/html" data-help-name="modbus_rtu">
+    <p>modbus_rtu. Code by Do Duy Cop</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>id<span class="property-type">int</span></dt>
+        <dd>required</dd>
+        
+        <dt>fn<span class="property-type">int</span></dt>
+        <dd>required</dd>
+        
+        <dt>addr<span class="property-type">int</span></dt>
+        <dd>required</dd>
+        
+        <dt>count<span class="property-type">int</span></dt>
+        <dd>required</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">Buffer</span></dt>
+        <dd>Output</dd>
+    </dl>
+
+    <h3>Details</h3>
+    <dl class="message-properties">
+    <p>fn = 0 : <br>
+       msg.payload = msg.payload + 2 byte crc16<hr>
+       fn &gt; 0:<br>
+       id = 0 then get msg.payload.id<br>
+       addr = 0 then get msg.payload.addr<br>
+       count = 0 then get msg.payload.count
+    </p>
+    </dl>
+</script>
